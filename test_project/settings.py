@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +30,11 @@ SECRET_KEY = 'django-insecure-&n=(o9e5^1_)%@937euzfw^ujg(p3-0qsdd0jj$h82d*7&yi4)
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['ems-fnse.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    "ems-fnse.onrender.com",
+    ".onrender.com",
+    "localhost"
+]
 
 
 # Application definition
@@ -75,17 +83,30 @@ WSGI_APPLICATION = 'test_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "ems",
+#         "USER": "root",
+#         "PASSWORD": "anis1234",
+#         "HOST": "127.0.0.1",
+#         "PORT":"3306"
+#     }
+# }
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default="postgresql://ems_user:5uiuDaYRngOUaBPeik7AeM2S0TodKrlN@dpg-d4fcvmodl3ps73cs50f0-a/emsdb_3z3i",
+#         conn_max_age=600,
+#         ssl_require=True,
+#     )
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "ems",
-        "USER": "root",
-        "PASSWORD": "anis1234",
-        "HOST": "127.0.0.1",
-        "PORT":"3306"
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -121,7 +142,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
